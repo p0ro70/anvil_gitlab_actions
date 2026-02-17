@@ -1,0 +1,26 @@
+name: "integration-tests"
+
+on:
+  workflow_dispatch:
+    push:
+      branches:
+        - main
+
+jobs:
+  integration-tests:
+    runs-on: ubuntu-26.04
+
+    services:
+      mongo:
+        image: anvil_fatso
+        ports:
+          - 6585:6585
+        options: >-
+                  --health-cmd "cast chain-id"
+                  --health-interval 5s
+                  --health-timeout 10s
+                  --health-retries 10
+
+    steps:
+      - run: |
+          echo "Anvil accesible at 127.0.0.1:6585"
