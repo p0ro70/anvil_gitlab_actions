@@ -8,11 +8,11 @@ on:
 
 jobs:
   integration-tests:
-    runs-on: ubuntu-26.04
+    runs-on:  ubuntu-latest
 
     services:
       mongo:
-        image: anvil_fatso
+        image: p0r070/anvil_fatso:latest
         ports:
           - 6585:6585
         options: >-
