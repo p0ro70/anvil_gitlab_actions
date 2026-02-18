@@ -12,7 +12,7 @@ env:
 jobs:
   contract-deploy:
     runs-on: ubuntu-latest
-    container: ubuntu-latest
+    container: ubuntu:24.04
     permissions:
       contents: read
     services:
