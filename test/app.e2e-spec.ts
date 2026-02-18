@@ -4,6 +4,15 @@ import request from 'supertest';
 import { App } from 'supertest/types';
 import { AppModule } from './../src/app.module';
 
+
+import * as contract_deploy_details from "contracts/erc20/broadcast/erc20.s.sol/31337/run-latest.json";
+
+const CONTRACT: string | undefined = process.env.CONTRACT;
+if (!CONTRACT) {
+    throw new Error("Please provide de deployed address of the contract as an environment variable with name CONTRACT")
+}
+const firstAnvilAddress = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
+
 describe('AppController (e2e)', () => {
   let app: INestApplication<App>;
 
@@ -17,8 +26,10 @@ describe('AppController (e2e)', () => {
   });
 
   it('/ (GET)', async () => {
+      console.log("query");
+      console.log(`/balance/${CONTRACT}/${firstAnvilAddress}`);
     const res = await request(app.getHttpServer())
-        .get('/balance/0x5FbDB2315678afecb367f032d93F642f64180aa3/0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266')
+        .get(`/balance/${ CONTRACT }/${firstAnvilAddress}`)
       .expect(200);
       console.log(res);
       expect(res.text).toBe("5");
