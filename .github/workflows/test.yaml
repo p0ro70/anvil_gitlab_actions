@@ -6,21 +6,53 @@ on:
       branches:
         - main
 
-jobs:
-  integration-tests:
-    runs-on:  ubuntu-latest
+env:
+  FOUNDRY_PROFILE: ci
 
+jobs:
+  contract-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
     services:
       mongo:
         image: p0r070/anvil_fatso:latest
         ports:
-          - 6585:6585
+          - 8545:8545
         options: >-
                   --health-cmd "cast chain-id"
                   --health-interval 5s
                   --health-timeout 10s
                   --health-retries 10
-
     steps:
-      - run: |
-          echo "Anvil accesible at 127.0.0.1:6585"
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Ping anvil
+        run: cast chain-id
+
+      - name: Deploy contract
+        run:   forge script script/erc20.s.sol --broadcast --rpc-url http://localhost:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+
+  # integration-tests:
+  #   runs-on:  ubuntu-latest
+
+  #   services:
+  #     mongo:
+  #       image: p0r070/anvil_fatso:latest
+  #       ports:
+  #         - 6585:6585
+  #       options: >-
+  #                 --health-cmd "cast chain-id"
+  #                 --health-interval 5s
+  #                 --health-timeout 10s
+  #                 --health-retries 10
+
+  #   steps:
+  #     - run: |
+  #         echo "Anvil accesible at 127.0.0.1:6585"
