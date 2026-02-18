@@ -21,4 +21,4 @@ COPY --from=builder /app/forge /usr/bin
 # RUN source ~/.bashrc
 EXPOSE 8545
 
-CMD ["anvil"]
+CMD ["anvil", "--host", "0.0.0.0"]
