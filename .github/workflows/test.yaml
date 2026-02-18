@@ -12,7 +12,7 @@ env:
 jobs:
   contract-deploy:
     runs-on: ubuntu-latest
-    container: ghcr.io/foundry-rs/foundry:stable
+    container: ubuntu-latest
     permissions:
       contents: read
     services:
@@ -31,8 +31,8 @@ jobs:
           persist-credentials: false
           submodules: recursive
 
-      # - name: Install Foundry
-      #   uses: foundry-rs/foundry-toolchain@v1
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
 
       - name: Ping anvil
         run: cast chain-id --rpc-url http://anvil:8545
