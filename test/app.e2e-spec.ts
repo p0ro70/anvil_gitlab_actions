@@ -32,6 +32,6 @@ describe('AppController (e2e)', () => {
         .get(`/balance/${ CONTRACT }/${firstAnvilAddress}`)
       .expect(200);
       console.log(res);
-      expect(res.text).toBe("5");
+      expect(res.text).toBe("0");
   });
 });

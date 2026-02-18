@@ -10,7 +10,7 @@ import {
 } from "viem";
 import {abi} from "./erc20_abi";
 
-const RPC_URL: string = "http://localhost:8545";
+const RPC_URL: string = "http://anvil:8545";
 
 export function getWallet(rpc_url: string) {
     const client = createWalletClient({
