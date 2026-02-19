@@ -57,3 +57,10 @@ jobs:
       - name: Test
         run: export CONTRACT=$(cat contracts/erc20/broadcast/erc20.s.sol/31337/run-latest.json | grep -m 1 contractAddres | grep -Eo '0x[a-zA-Z0-9]*' ) && pnpm test:e2e
 
+      - name: Test Report
+        uses: dorny/test-reporter@v2
+        if: ${{ !cancelled() }}       # run this step even if previous step failed
+        with:
+          name: JEST Tests            # Name of the check run which will be created
+          path: test/test_reports/junit-*.xml    # Path to test results
+          reporter: jest-junit        # Format of test results
