@@ -57,11 +57,24 @@ jobs:
       - name: Test
         run: export CONTRACT=$(cat contracts/erc20/broadcast/erc20.s.sol/31337/run-latest.json | grep -m 1 contractAddres | grep -Eo '0x[a-zA-Z0-9]*' ) && pnpm test:e2e
 
-      - name: Test Report
-        uses: dorny/test-reporter@v2
-        if: ${{ !cancelled() }}       # run this step even if previous step failed
-        run: ln git /usr/bin/git
+      - name: Publish Test Report
+        uses: ctrf-io/github-test-reporter@v1
         with:
-          name: JEST Tests            # Name of the check run which will be created
-          path: test/test_reports/junit_*.xml    # Path to test results
-          reporter: jest-junit        # Format of test results
+          report-path: './test/test_reports/*xml'
+          integrations-config: |
+            {
+              "junit-to-ctrf": {
+                "enabled": true,
+                "action": "convert",
+                "options": {
+                  "output": "./ctrf-reports/ctrf-report.json",
+                  "toolname": "junit-to-ctrf",
+                  "useSuiteName": false,
+                  "env": {
+                    "appName": "my-app"
+                  }
+                }
+              }
+            }
+        if: always()
+
