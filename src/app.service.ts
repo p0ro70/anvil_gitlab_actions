@@ -11,14 +11,11 @@ import {abi} from "./erc20_abi";
 import { mainnet } from 'viem/chains';
 import { privateKeyToAccount } from 'viem/accounts';
 
-const RPC_URL: string = "http://localhost:8545";
-const firstAnvilAddress: Address = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
-const firstAnvilKey: Address  = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
+const RPC_URL: string = "http://anvil:8545";
 
 export function getWallet(rpc_url: string) {
     const client = createWalletClient({
         // TODO parameterize RPC provider, obtain it from ChainService.
-        account: privateKeyToAccount(firstAnvilKey),
         transport: http(rpc_url),
     }).extend(publicActions);
     return client;
@@ -48,7 +45,7 @@ export class AppService {
                 abi: abi,
                 functionName: 'mint',
                 args: [amount],
-                account: privateKeyToAccount(firstAnvilKey)
+                account: privateKeyToAccount(privateKey)
             });
             await this.wallet.writeContract(simulation.request);
             return true;
