@@ -27,6 +27,16 @@ export class AppService {
     constructor() {
         this.wallet = getWallet(RPC_URL);
     }
+    async mintAmount(contractAddr: Address, amount: number, privateKey: Address) {
+        const { request } = await this.wallet.simulateContract({
+            account: privateKey,
+            address: contractAddr,
+            abi: abi,
+            functionName: 'mint',
+            args: [amount]
+        })
+        await this.wallet.writeContract(request)
+    };
     async getAmount(contractAddr: Address, addr: Address) {
         const amount = await this.wallet.readContract({
             address: contractAddr,

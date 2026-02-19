@@ -12,6 +12,7 @@ if (!CONTRACT) {
     throw new Error("Please provide de deployed address of the contract as an environment variable with name CONTRACT")
 }
 const firstAnvilAddress = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
+const firstAnvilKey = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
 
 describe('AppController (e2e)', () => {
   let app: INestApplication<App>;
@@ -25,13 +26,22 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', async () => {
-      console.log("query");
-      console.log(`/balance/${CONTRACT}/${firstAnvilAddress}`);
-    const res = await request(app.getHttpServer())
-        .get(`/balance/${ CONTRACT }/${firstAnvilAddress}`)
-      .expect(200);
-      console.log(res);
+  it('Gets a balance.', async () => {
+      const res = await request(app.getHttpServer())
+          .get(`/balance/${ CONTRACT }/${firstAnvilAddress}`)
+          .expect(200);
       expect(res.text).toBe("0");
+  });
+
+    it('Mints.', async () => {
+        const amount = 4;
+        await request(app.getHttpServer())
+            .get(`/mint/${CONTRACT}/${firstAnvilKey}/${amount}`)
+            .expect(200);
+
+      const res = await request(app.getHttpServer())
+          .get(`/balance/${ CONTRACT }/${firstAnvilAddress}`)
+          .expect(200);
+      expect(res.text).toBe("4");
   });
 });

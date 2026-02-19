@@ -9,5 +9,22 @@ export class AppController {
   @Get('balance/:contract/:wallet')
   async getBalance(@Param('contract') contract: Address, @Param('wallet') wallet: Address): Promise<number> {
       return await this.appService.getAmount(contract, wallet);
+    }
+  @Get('mint/:contract/:key/amount')
+  async mint(
+      @Param('contract') contract: Address,
+      @Param('key') key: Address,
+      @Param('amount') amount:  number
+  ): Promise<boolean> {
+      try {
+          await this.appService.mintAmount(
+              contract,
+              amount,
+              key
+          );
+          return true;
+      } catch(e) {
+          return false;
+      }
   }
 }
