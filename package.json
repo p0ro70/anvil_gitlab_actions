@@ -6,7 +6,7 @@
     "private": true,
     "license": "UNLICENSED",
     "jest-junit": {
-        "outputDirectory": "./test/test_reports",
+        "outputDirectory": "<rootDir>/test_reports",
         "outputName": "junit_test_results.xml",
         "classNameTemplate": "{suitename}"
     },
