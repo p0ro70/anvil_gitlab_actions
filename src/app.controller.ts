@@ -10,7 +10,7 @@ export class AppController {
   async getBalance(@Param('contract') contract: Address, @Param('wallet') wallet: Address): Promise<number> {
       return await this.appService.getAmount(contract, wallet);
     }
-  @Get('mint/:contract/:key/amount')
+  @Get('mint/:contract/:key/:amount')
   async mint(
       @Param('contract') contract: Address,
       @Param('key') key: Address,
@@ -24,6 +24,8 @@ export class AppController {
           );
           return true;
       } catch(e) {
+          console.log("failure in mint");
+          console.log(e);
           return false;
       }
   }
