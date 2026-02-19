@@ -57,3 +57,9 @@ jobs:
       - name: Test
         run: export CONTRACT=$(cat contracts/erc20/broadcast/erc20.s.sol/31337/run-latest.json | grep -m 1 contractAddres | grep -Eo '0x[a-zA-Z0-9]*' ) && pnpm test:e2e
 
+      - name: Publish Test Report
+        uses: ctrf-io/github-test-reporter@v1
+        with:
+          report-path: 'ctrf/ctrf-report.json'
+        if: always()
+
